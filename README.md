@@ -56,7 +56,8 @@ $ microservice pack deploy subscribe -n node-ms-servicenow -u <CUMULOCITY_USER> 
 
 1. Login to ServiceNow instance, open `Business Rules`, in Left Navigation  
 
-2. Create new Business Rule `Call Cumulocity`
+2. Create new Business Rule `Call Cumulocity`  
+
 ![Create Business rule](doc/CreateBusinessRule01.png)  
 
 3. Enter setting as marked on screenshot  
