@@ -20,7 +20,7 @@ For this demo a Cumulocity tenant and a ServiceNow instance are required. For a 
 
 The microservice is written in NodeJS. New Cumulocity alarms generate incidents in ServiceNow. When the incident is resolved the correponding Cumulocity alarm is cleared.
 
-<img src="doc/Overview.png" alt="Overview"  width="75%" height="75%">
+<img src="doc/Overview.png" alt="Overview"  width="100%" height="100%">
 
 [back to content](#content)
 
@@ -64,7 +64,7 @@ $ microservice pack deploy subscribe -n node-ms-servicenow -u <CUMULOCITY_USER> 
 * Advanced -> checked
 * On tab When to run -> after, Update  
 
-<img src="doc/CreateBusinessRule02.png" alt="OvervCreate Business ruleiew"  width="75%" height="75%"> 
+<img src="doc/CreateBusinessRule02.png" alt="OvervCreate Business ruleiew"  width="100%" height="100%"> 
 
 * On tab Advanced copy the following code:  
 
@@ -122,11 +122,11 @@ function resolveName (updated_by) {
 1. Create alarm in Cumulocity
 2. Resolve corresponding incident in ServiceNow  
 
-<img src="doc/CreateBusinessRule00.png" alt="ServiceNow incidents"  width="75%" height="75%">
+<img src="doc/CreateBusinessRule00.png" alt="ServiceNow incidents"  width="100%" height="100%">
 
 3. View cleared alarm in Cumulocity  
 
-<img src="doc/CreateBusinessRule05.png" alt="Cumulocity cleared alarm" width="75%" height="75%">  
+<img src="doc/CreateBusinessRule05.png" alt="Cumulocity cleared alarm" width="100%" height="100%">  
 
 [back to content](#content)
 ______________________
