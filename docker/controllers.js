@@ -3,13 +3,13 @@
 /********************* ServcieNow *********************/
 
 // Initialize access to ServcieNow
-const password_sn = process.env.SERVICENOW_PASSWORD;
-const username_sn = process.env.SERVICENOW_USER;
-const instancename_sn = process.env.SERVICENOW_INSTANCENAME;
-var url_sn = `https://${instancename_sn}.service-now.com`;
+const sn_password = process.env.SERVICENOW_PASSWORD;
+const sn_username = process.env.SERVICENOW_USER;
+const sn_instancename = process.env.SERVICENOW_INSTANCENAME;
+var sn_url = `https://${sn_instancename}.service-now.com`;
 
-var servicenowClient = require('servicenow-client');
-servicenowClient = new servicenowClient(url_sn, username_sn, password_sn);
+var ServicenowClient = require('servicenow-client');
+let servicenowClient;
 
 // Initialize using signing secret from environment variables
 const port = process.env.PORT;
@@ -87,6 +87,7 @@ const { Client, FetchClient, BasicAuth } = require("@c8y/client");
 
 const baseUrl = process.env.C8Y_BASEURL;
 let cachedUsers = [];
+let cachedOptions = {};
 
 
 function start (se){
@@ -109,12 +110,20 @@ async function getUsers () {
     return res.json();
  }
 
+// Get the tenant options to connect to ServiceNow
+async function getTenantOptions (auth) {
+    let CATEGORY= 'SERVICENOW';
+    const client = new FetchClient(auth, baseUrl);
+    const res  = await client.fetch(`/tenant/options/${CATEGORY}`);
+    return res.json();
+ }
+
 
 // where the magic happens...
 (async () => {
 
     cachedUsers = (await getUsers()).users;
-
+    
     if (Array.isArray(cachedUsers) && cachedUsers.length) {
         // List filter for unresolved alarms only
         const filter = {
@@ -122,6 +131,36 @@ async function getUsers () {
             withTotalPages: true,
             resolved: false
         };
+        
+        try {
+            //cachedUsers.forEach(async (user) => {
+            for (const user of cachedUsers) {    
+                // get serivce user for bootstrapuser
+                if (process.env.C8Y_BOOTSTRAP_TENANT === user.tenant) {
+                    // Service user credentials
+                    let auth = new BasicAuth({ 
+                        user:     user.name,
+                        password: user.password,
+                        tenant:   user.tenant
+                    });
+                    
+                    cachedOptions = (await getTenantOptions(auth));
+                    if (typeof cachedOptions.SERVICENOW_INSTANCE === 'undefined'  ||
+                    typeof cachedOptions.SERVICENOW_PASSWORD === 'undefined'  ||
+                    typeof cachedOptions.SERVICENOW_USER === 'undefined') {
+                        console.log(`[INFO] falling back to properties .env: ${sn_url}/${sn_password}/${sn_username}`);
+                        servicenowClient = new ServicenowClient(sn_url, sn_username, sn_password);                        
+                    } else {
+                        sn_url = `https://${cachedOptions.SERVICENOW_INSTANCE}.service-now.com`;
+                        console.log(`[INFO] Using proerties in tenants options: ${sn_url}/${cachedOptions.SERVICENOW_USER}/${cachedOptions.SERVICENOW_PASSWORD}`);
+                        servicenowClient = await new ServicenowClient(sn_url, cachedOptions.SERVICENOW_USER, cachedOptions.SERVICENOW_PASSWORD);
+                    }
+                }
+            }
+            //});
+        } catch (err) {
+            console.error(err);
+        }
 
         try {
             cachedUsers.forEach(async (user) => {
