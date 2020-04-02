@@ -1,3 +1,10 @@
+# User
+attic/
+*.zip
+*.jar
+*.tar
+
+
 # Logs
 logs
 *.log

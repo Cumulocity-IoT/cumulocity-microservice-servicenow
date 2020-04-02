@@ -1,0 +1,45 @@
+(function executeRule(current, previous /*null when async*/) {
+	
+	try {
+		var request = new sn_ws.RESTMessageV2();
+		request.setEndpoint('https://<CUMULOCITY_TENANT>.cumulocity.com/service/node-ms-servicenow/incident');
+		request.setHttpMethod('POST');
+		
+		var user = "***";
+		var password = "***";
+		var string = {};
+		
+		request.setBasicAuth(user,password);
+		request.setRequestHeader("Accept","application/json");
+		
+		string.u_short_description = current.getValue('short_description');
+		string.u_impact = current.getValue('impact');
+		string.u_urgency = current.getValue('urgency');
+		string.u_state = current.getValue('state');
+		string.u_number = current.getValue('number');
+		var u_updated_by = current.getValue('sys_updated_by');
+		string.u_updated_on = current.getValue('sys_updated_on');
+		string.u_updated_name = (' ' + resolveName(u_updated_by)).slice(1);
+		
+		var myJSON = JSON.stringify(string);
+		
+		request.setRequestHeader('Content-Type','application/json');
+		request.setRequestBody(myJSON);
+		var response = request.execute();
+		gs.log('test: '+response.getBody());
+		
+	} catch(err) {
+		gs.log('Orange Error: ' + err);
+	}
+	
+})(current, previous);
+
+
+function resolveName (updated_by) {
+		var gr = new GlideRecord('sys_user');
+		gr.addQuery('user_name', updated_by);
+		gr.query();
+		if(gr.next()) {
+			return gr.first_name;
+		}
+}
