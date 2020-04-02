@@ -1,7 +1,7 @@
 # Cumulocity microservice for incident managment in ServiceNow
 
 This project is a microservice for managing incidents in SerivceNow. When an alarm in Cumulocity is created the microservice creates a resulting incident. When the incident is resolved the corresponing alarm in Cumulocity is cleared.
-This allows to work in an efficient manner in a IT Service Managent Platform ServiceNow and link it to Cumulocity.
+This allows to work in an efficient manner in a IT Service Management Platform ServiceNow and link it to Cumulocity.
 Potential use cases are:
 - Extend IT Service Management and Help Desk in cumulocity
 
