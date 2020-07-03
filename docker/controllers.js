@@ -63,7 +63,8 @@ async function updateAlarmFromIncident(adata) {
                     const partialUpdateAlarm = {
                         id: alarmId,
                         status: "CLEARED",
-                        resolve_note: "Was resolved in ServiceNow at:" + new Date(Date.now()).toISOString()
+                        resolve_note_Cumulocity: "Was resolved in ServiceNow at:" + new Date(Date.now()).toISOString(),
+                        resolve_note_ServiceNow: adata.u_close_notes + "/" + adata.u_close_code
                     };
                     // Get filtered alarms and post a message to Slack
                     const {

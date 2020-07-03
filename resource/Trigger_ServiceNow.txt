@@ -17,6 +17,8 @@
 		string.u_urgency = current.getValue('urgency');
 		string.u_state = current.getValue('state');
 		string.u_number = current.getValue('number');
+		string.u_close_notes = current.getValue('close_notes');
+		string.u_close_code = current.getValue('close_code');
 		var u_updated_by = current.getValue('sys_updated_by');
 		string.u_updated_on = current.getValue('sys_updated_on');
 		string.u_updated_name = (' ' + resolveName(u_updated_by)).slice(1);
