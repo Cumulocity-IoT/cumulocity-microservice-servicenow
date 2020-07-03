@@ -194,7 +194,7 @@ function listen2NewAlarms() {
                             servicenowClient = new ServicenowClient(sn_url, sn_username, sn_password);
                         } else {
                             sn_url = `https://${cachedOptions.SERVICENOW_INSTANCE}.service-now.com`;
-                            console.log(`[INFO] Using proerties in tenants options: ${sn_url}/${cachedOptions.SERVICENOW_USER}/${cachedOptions.SERVICENOW_PASSWORD}`);
+                            console.log(`[INFO] Using properties in tenants options: ${sn_url} and ${cachedOptions.SERVICENOW_USER} and ${cachedOptions.SERVICENOW_PASSWORD}`);
                             servicenowClient = new ServicenowClient(sn_url, cachedOptions.SERVICENOW_USER, cachedOptions.SERVICENOW_PASSWORD);
                         }
                         listen2NewAlarms();
