@@ -29,7 +29,7 @@ function createServiceNowIncident(adata, tenant) {
     //newIncident.description = `Source: <${src.self}|${src.name ? src.name : src.id}>`;
     servicenowClient.createRecord('incident', newIncident, (res) => {
         //use response
-        console.log(`[INFO] Id of created incident form ServiceNow: ${res}`);
+        console.log(`[INFO] For alarm: ${adata.id} ServiceNow incident was generated: ${res} at :` + new Date(Date.now()).toISOString());
     });
 }
 
@@ -63,7 +63,7 @@ async function updateAlarmFromIncident(adata) {
                     const partialUpdateAlarm = {
                         id: alarmId,
                         status: "CLEARED",
-                        resolve_note: "Was resolve in ServiceNow at:" + new Date(Date.now()).toISOString()
+                        resolve_note: "Was resolved in ServiceNow at:" + new Date(Date.now()).toISOString()
                     };
                     // Get filtered alarms and post a message to Slack
                     const {
